@@ -1,2 +1,2 @@
-# spring-project-base
-個人でSpring Bootを使用する際のベース設定保存用Project
+# spring-maven-template
+Maven使用時のテンプレートリポジトリ
