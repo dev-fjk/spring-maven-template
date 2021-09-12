@@ -6,7 +6,14 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class Sample {
-    
+
+    /**
+     * 足し算を行う
+     *
+     * @param a : 第一引数
+     * @param b : 第二引数
+     * @return 加算した値
+     */
     public int sum(int a, int b) {
         log.info("sum START");
 
