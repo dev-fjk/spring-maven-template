@@ -16,7 +16,6 @@ jobs:
       contents: read
       packages: write
 
-    # TODO image publish先のDockerコンテナなどの準備が必要なので一旦テンプレートの状態そのまま
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
@@ -30,7 +29,8 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+#    # TODO image publish先のDockerコンテナなどの準備が必要なので一旦テンプレートの状態そのまま
+#    - name: Publish to GitHub Packages Apache Maven
+#      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+#      env:
+#        GITHUB_TOKEN: ${{ github.token }}
