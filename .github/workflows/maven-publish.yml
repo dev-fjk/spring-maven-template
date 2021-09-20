@@ -4,12 +4,21 @@
 name: Maven Package
 
 on:
+  # masterへのコミット時に maven packageを実行
+  push:
+    branches:
+      - master
+  pull_request:
+    # master/develop/main ブランチ向けのPRでmaven packageを実行
+    branches:
+      - master
+      - develop
+      - main
   release:
     types: [created]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
