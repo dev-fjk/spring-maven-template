@@ -12,6 +12,7 @@ logging:
     web: debug
 
 ---
+# -Dspring.profiles.activeを指定しなかった場合に実行される application.ymlの指定
 spring:
   profiles:
     default: local
