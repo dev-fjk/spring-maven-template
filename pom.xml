@@ -154,6 +154,12 @@
             <version>${spock.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>3.0.8</version>
+            <type>pom</type>
+        </dependency>
     </dependencies>
 
     <build>
@@ -163,7 +169,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <!-- spock コンパイル -->
+
+            <!-- Groovy コンパイル -->
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
@@ -194,7 +201,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
                 <configuration>
-                    <useFile>false</useFile>
+                    <useFile>true</useFile>
+                    <trimStackTrace>false</trimStackTrace>
                     <failIfNoTests>false</failIfNoTests>
                     <includes>
                         <include>**/*Test.class</include>
@@ -257,5 +265,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
