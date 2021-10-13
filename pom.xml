@@ -11,22 +11,19 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.maven.example.demo</groupId>
-    <artifactId>maven-base</artifactId>
+    <artifactId>spring-maven-template</artifactId>
     <version>1.0.0</version>
-    <name>maven-base</name>
-    <description>Maven使用時のbaseプロジェクト</description>
+    <name>spring-maven-template</name>
+    <description>template project when use maven</description>
+
     <properties>
         <java.version>11</java.version>
         <spock.version>2.0-groovy-3.0</spock.version>
-
-        <test.include.java>**/*.java</test.include.java>
-        <test.exclude.java>.</test.exclude.java>
         <test.include.groovy>**/*.groovy</test.include.groovy>
-        <test.exclude.groovy>.</test.exclude.groovy>
     </properties>
 
+    <!-- dependencies 依存関係の注入 ライブラリ定義 -->
     <dependencies>
-
         <!-- Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -69,11 +66,10 @@
             <version>1.0.1</version>
         </dependency>
 
-        <!-- MySql 別のRDB使用時は削除してください -->
+        <!-- PostgreSQL -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.23</version><!--$NO-MVN-MAN-VER$ -->
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -137,13 +133,11 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>3.4.3</version><!--$NO-MVN-MAN-VER$ -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-inline</artifactId>
-            <version>3.4.0</version><!--$NO-MVN-MAN-VER$ -->
             <scope>test</scope>
         </dependency>
 
@@ -160,7 +154,6 @@
             <version>${spock.version}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -169,17 +162,8 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
             </plugin>
-
-            <!-- spock テスト用設定 -->
+            <!-- spock コンパイル -->
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
@@ -187,6 +171,7 @@
                 <executions>
                     <execution>
                         <goals>
+                            <goal>addTestSources</goal>
                             <goal>compileTests</goal>
                         </goals>
                     </execution>
@@ -198,60 +183,38 @@
                             <includes>
                                 <include>${test.include.groovy}</include>
                             </includes>
-                            <excludes>
-                                <exclude>${test.exclude.groovy}</exclude>
-                            </excludes>
                         </testSource>
                     </testSources>
                 </configuration>
             </plugin>
 
+            <!-- Maven テストの実行 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>3.0.0-M5</version>
                 <configuration>
-                    <failIfNoTests>true</failIfNoTests>
+                    <useFile>false</useFile>
+                    <failIfNoTests>false</failIfNoTests>
                     <includes>
                         <include>**/*Test.class</include>
                         <include>**/*Spec.class</include>
                     </includes>
                 </configuration>
                 <dependencies>
+                    <!-- Junit5向けの設定　Spock 2.0移行は Junit5の環境ベースで動作するため設定。 -->
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit-platform</artifactId>
+                        <version>3.0.0-M5</version>
+                    </dependency>
+                    <!-- junit4向け 並列動作設定 spock2.0と junit4を併用しない場合は不要 -->
                     <dependency>
                         <groupId>org.apache.maven.surefire</groupId>
                         <artifactId>surefire-junit47</artifactId>
                         <version>3.0.0-M5</version>
                     </dependency>
                 </dependencies>
-            </plugin>
-
-            <!-- for Junit -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <executions>
-                    <execution>
-                        <id>default-testCompile</id>
-                        <phase>test-compile</phase>
-                        <configuration>
-                            <testIncludes>
-                                <include>${test.include.java}</include>
-                            </testIncludes>
-                            <testExcludes>
-                                <exclude>${test.exclude.java}</exclude>
-                            </testExcludes>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                    <jdkToolchain>
-                        <version>11</version>
-                    </jdkToolchain>
-                </configuration>
             </plugin>
 
             <!-- jacoco カバレッジレポート設定 target/jacoco-ut/index.html でテストのソース網羅率を確認できる-->

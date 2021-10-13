@@ -1,7 +1,7 @@
 ---
 spring:
   application:
-    name: maven-base
+    name: spring-maven-template
   messages:
     encoding: UTF-8
   jackson:
