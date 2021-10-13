@@ -1,10 +1,12 @@
 name: Maven Test
 
 on:
-  # job実行のトリガーを設定 masterへのコミット時に maven Testを実行
   push:
+    # publishの方で maven Packageを動かしている関係でmaster/main以外にpushした場合にmavenTestを動かす
     branches:
-      - master
+      - '**'
+      - '!master'
+      - '!main'
   pull_request:
     # master/develop/main ブランチ向けのPRでmaven testを実行
     branches:
